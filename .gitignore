@@ -23,9 +23,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-<<<<<<< HEAD
-=======
-
->>>>>>> 4c802f9 (initial commit 1)
 .env
 client/.env

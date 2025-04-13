@@ -45,10 +45,16 @@ app.use('/api/journey', journeyRoute);
 app.use('/api/notification', notificationRoute);
 
 // Serve frontend (for deployment)
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+// app.use(express.static(path.join(__dirname, 'client', 'dist')));
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
+// });
+
+app.use(express.static(path.join(__dirname, '/client/dist')));
+app.get('*',(req,res)=>{
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
 });
+
 
 // Error Handler
 app.use((err, req, res, next) => {

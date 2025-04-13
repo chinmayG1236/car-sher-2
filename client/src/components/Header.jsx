@@ -1,9 +1,11 @@
 
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 export default function Header() {
   const { currentUser } = useSelector((state) => state.user);
+  const { notifs } = useSelector((state) => state.user);
 
   return (
     <header className="bg-slate-800 text-white shadow-md sticky top-0 z-50">
@@ -42,7 +44,7 @@ export default function Header() {
 
     {/* 🔴 Badge */}
     <span className="absolute -top-1 -right-2 bg-red-600 text-white text-xs font-bold px-1.5 py-0.5 rounded-full">
-      
+      {notifs}
     </span>
   </Link>
 </li>

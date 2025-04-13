@@ -3,7 +3,7 @@ import { Link,useNavigate } from 'react-router-dom'
 import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice.js';
 import { useDispatch,useSelector } from 'react-redux';
 import OAuth from '../components/OAuth.jsx';
-// import socket from '../utils/socket.js';
+import socket from '../utils/socket.js';
 
 export default function SignIn() {
   const [formData, setFormData] = useState({});

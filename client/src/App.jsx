@@ -11,8 +11,24 @@ import MyJourneys from "./pages/MyJourneys"
 import Notifications from "./pages/Notifications"
 import MeAsDriver from "./pages/MeAsDriver"
 import MeAsPassenger from "./pages/MeAsPassenger"
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import socket from './utils/socket.js'; // your socket.js path
 
 export default function App() {
+  const user = useSelector((state) => state.user.currentUser);
+
+  useEffect(() => {
+    if (user?._id) {
+      if (!socket.connected) {
+        socket.connect(); 
+      }
+      socket.emit('registerUser', user._id); 
+      console.log('✅ User registered (initial or after reload):', user._id);
+    }
+  }, [user]);
+  
+
   return (
   <BrowserRouter>
     {/*header*/}

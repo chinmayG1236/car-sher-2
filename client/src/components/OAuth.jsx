@@ -4,7 +4,7 @@ import { app } from '../firebase';
 import {useDispatch} from 'react-redux';
 import { signInStart,signInSuccess,signInFailure } from '../redux/user/userSlice.js';
 import { useNavigate } from 'react-router-dom';
-// import socket from '../utils/socket.js';
+import socket from '../utils/socket.js';
 export default function OAuth() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -31,7 +31,7 @@ export default function OAuth() {
             console.log('userId is ',data._id);
             
             // socket.connect(); // manually connect
-            // socket.emit('registerUser', data._id);
+            socket.emit('registerUser', data._id);
 
             navigate('/');
         } catch (error) {

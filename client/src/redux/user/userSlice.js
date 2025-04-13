@@ -8,6 +8,7 @@ const initialState = {
     end:null,
     startOnMap:null,
     endOnMap:null,
+    notifs:0
 };
 
 const userSlice = createSlice({
@@ -80,7 +81,9 @@ const userSlice = createSlice({
         deleteEndOnMap:(state)=>{
             state.endOnMap = null;
         },
-
+        setNotifs:(state,action)=>{
+            state.notifs = action.payload;
+        },
 
     }
 })
@@ -88,6 +91,6 @@ const userSlice = createSlice({
 export const {signInStart,signInSuccess,signInFailure,updateUserFailure,
     updateUserStart,updateUserSuccess,deleteUserFailure,deleteUserStart,
     deleteUserSuccess,signOut,addStart,addEnd,addStartOnMap,addEndOnMap,
-    deleteStart,deleteEnd,deleteStartOnMap,deleteEndOnMap} = userSlice.actions;
+    deleteStart,deleteEnd,deleteStartOnMap,deleteEndOnMap,setNotifs} = userSlice.actions;
 
 export default userSlice.reducer;

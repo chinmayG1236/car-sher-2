@@ -19,7 +19,7 @@ export const addJourney = async (req,res,next)=>{
 export const getJourney = async (req,res,next)=>{
 
     try {
-        const journeys = await Journey.find().sort({ journeyDate: -1 }); 
+        const journeys = await Journey.find().sort({ journeyDate: 1 }); 
         res.status(200).json(journeys);
     } catch (error) {
         next(error);

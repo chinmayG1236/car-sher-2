@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Journey from "./Journey";
 import { useDispatch, useSelector } from "react-redux";
-// import socket from "../utils/socket";
+import socket from "../utils/socket";
 
 function JourneyList() {
   const [items, setItems] = useState([]);
@@ -78,11 +78,11 @@ function JourneyList() {
       name: currentUser.username,
       id: currentUser._id,
     };
+    socket.emit("passenger interested", {
+      journey,
+      passenger,
+    });
 
-    // socket.emit("passenger interested", {
-    //   journey,
-    //   passenger,
-    // });
     const data = {
       start:journey.start,
       end:journey.end,
@@ -101,7 +101,11 @@ function JourneyList() {
       body: JSON.stringify(data),
     });
     // console.log(res)
+    
+
     alert(`Request sent to ${journey.username} (Driver)!`);
+    
+    
   };
 
   const now = new Date();

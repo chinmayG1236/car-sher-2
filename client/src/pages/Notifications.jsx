@@ -78,12 +78,28 @@
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-// import socket from '../utils/socket'; // make sure this points to your connected socket instance
-
+import socket from '../utils/socket'; // make sure this points to your connected socket instance
+import { setNotifs } from "../redux/user/userSlice.js";
+import { useDispatch } from 'react-redux';
 
 export default function Notifications() {
   const [notifications, setNotifications] = useState([]);
   const { currentUser } = useSelector((state) => state.user);
+  const [refresh, setRefresh] = useState(false);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const handleRequestDriver = async () => {
+      const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      await delay(1000);
+      setRefresh(prev => !prev);
+    };
+  
+    socket.on('request driver',handleRequestDriver);
+  
+    return () => {
+      socket.off('request driver', handleRequestDriver);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -91,6 +107,7 @@ export default function Notifications() {
         const res = await fetch(`/api/notification/get?driverId=${currentUser._id}`);
         const data = await res.json();
         setNotifications(data);
+        dispatch(setNotifs(data.length));
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -99,11 +116,11 @@ export default function Notifications() {
     if (currentUser?._id) {
       fetchNotifications();
     }
-  }, [currentUser]);
+  }, [currentUser,refresh]);
 
   const handleAccept = async (noti) => {
     // Handle accepting ride request
-    console.log("Accepting request:", noti);
+    // console.log("Accepting request:", noti);
     const journeyId = noti.journeyId;
     const passengerId = noti.passenger;
     const passengerName = noti.passengerName;
@@ -119,7 +136,12 @@ export default function Notifications() {
     await fetch(`/api/notification/markAsRead/${noti._id}`, {
       method: "PUT",
     });
-
+    socket.emit('driver response',{
+      passenger:noti.passenger,driverName:noti.driverName,message:'Accepted'
+    });
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      await delay(1000);
+      setRefresh(prev => !prev);
 
   };
 
@@ -129,6 +151,12 @@ export default function Notifications() {
     await fetch(`/api/notification/markAsRead/${noti._id}`, {
       method: "PUT",
     });
+    socket.emit('driver response',{
+      passenger:noti.passenger,driverName:noti.driverName,message:'Rejected'
+    });
+    const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+      await delay(1000);
+      setRefresh(prev => !prev);
   };
 
   return (

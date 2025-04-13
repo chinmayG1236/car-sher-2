@@ -6,6 +6,7 @@ import { app } from '../firebase';
 import { useDispatch } from 'react-redux';
 import { updateUserStart,updateUserFailure,updateUserSuccess, deleteUserStart, deleteUserSuccess, deleteUserFailure,signOut,deleteStart,deleteEnd,deleteStartOnMap,deleteEndOnMap } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom'
+import socket from '../utils/socket.js';
 
 export default function Profile() {
   // const navigate = useNavigate();
@@ -91,6 +92,7 @@ export default function Profile() {
   const HandleSignOut= async()=>{
     try {
       await fetch('/api/auth/signout');
+      socket.disconnect();
       dispatch(signOut());
       dispatch(deleteStart());
       dispatch(deleteEnd());

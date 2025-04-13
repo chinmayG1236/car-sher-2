@@ -13,9 +13,8 @@ import { Server } from 'socket.io';
 
 dotenv.config();
 
-// Setup __dirname for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+
+const __dirname = path.resolve(); // get root dir directly
 
 // Initialize Express
 const app = express();
